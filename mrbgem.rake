@@ -6,7 +6,7 @@ MRuby::Gem::Specification.new('mruby-dino-sys-esp32') do |spec|
   spec.version = Dino::ESP32::VERSION
   
   # Dependencies from mruby-esp32 project.
-  spec.add_dependency('mruby-esp32-system', github: 'mruby-esp32/mruby-esp32-system')
+  spec.add_dependency('mruby-esp32-system', github: 'dino-rb/mruby-esp32-system')
   spec.add_dependency('mruby-esp32-gpio',   github: 'dino-rb/mruby-esp32-gpio')
   spec.add_dependency('mruby-io',           github: 'mruby-esp32/mruby-io', :branch => 'esp32')
   
