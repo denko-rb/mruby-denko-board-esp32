@@ -1,13 +1,14 @@
 class Board
+  include ESP32::Constants
   include ESP32::GPIO
   
   def pin_mode(gpio, mode)
     case mode
-    when :input_pullup;   ESP32::GPIO.pin_mode(gpio, ESP32::GPIO::INPUT_PULLUP)
-    when :input_pulldown; ESP32::GPIO.pin_mode(gpio, ESP32::GPIO::INPUT_PULLDOWN)
-    when :input;          ESP32::GPIO.pin_mode(gpio, ESP32::GPIO::INPUT)
-    when :output;         ESP32::GPIO.pin_mode(gpio, ESP32::GPIO::OUTPUT)
-    when :input_output;   ESP32::GPIO.pin_mode(gpio, ESP32::GPIO::INPUT_OUTPUT)  
+    when :input_pullup;   ESP32::GPIO.pin_mode(gpio, ESP32::GPIO_MODE_INPUT_PULLUP)
+    when :input_pulldown; ESP32::GPIO.pin_mode(gpio, ESP32::GPIO_MODE_INPUT_PULLDOWN)
+    when :input;          ESP32::GPIO.pin_mode(gpio, ESP32::GPIO_MODE_INPUT)
+    when :output;         ESP32::GPIO.pin_mode(gpio, ESP32::GPIO_MODE_OUTPUT)
+    when :input_output;   ESP32::GPIO.pin_mode(gpio, ESP32::GPIO_MODE_INPUT_OUTPUT)  
     else raise "invalid mode given: #{mode}"
     end
   end
