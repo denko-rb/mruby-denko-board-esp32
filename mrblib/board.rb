@@ -77,19 +77,19 @@ class Board
   ]
   
   ADC1_MAP = {
-    36 => ADC1_CHANNEL_0,
-    37 => ADC1_CHANNEL_1,
-    38 => ADC1_CHANNEL_2,
-    39 => ADC1_CHANNEL_3,
-    32 => ADC1_CHANNEL_4,
-    33 => ADC1_CHANNEL_5,
-    34 => ADC1_CHANNEL_6,
-    35 => ADC1_CHANNEL_7
+    36 => ADC_CHANNEL_0,
+    37 => ADC_CHANNEL_1,
+    38 => ADC_CHANNEL_2,
+    39 => ADC_CHANNEL_3,
+    32 => ADC_CHANNEL_4,
+    33 => ADC_CHANNEL_5,
+    34 => ADC_CHANNEL_6,
+    35 => ADC_CHANNEL_7,
   }
   
   DAC_MAP = {
-    25 => DAC_CHANNEL_1,
-    26 => DAC_CHANNEL_2,
+    25 => DAC_CHAN_0,
+    26 => DAC_CHAN_1,
   }
   
   def map_pin(number)
