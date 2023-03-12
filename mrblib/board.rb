@@ -1,6 +1,5 @@
 class Board
   include ESP32::Constants
-  include ESP32::GPIO
 
   attr_accessor :ledc_pins
   
@@ -44,15 +43,8 @@ class Board
     end
     nil
   end
-    
-  def ledc_detach(pin)
-    ESP32::LEDC.deatch(pin)
-    (0..ledc_pins.length - 1).each do |index|
-      ledc_pins[index] = nil if ledc_pins[index] == pin
-    end
-  end
   
-  def pwm_setup(pin)
+  def ledc_config(pin, vchan)
     vchan = ledc_assign(pin)
     group = LEDC_CHANNEL_MAP[vchan][0]
     timer = LEDC_CHANNEL_MAP[vchan][1]
@@ -63,13 +55,25 @@ class Board
     
     ESP32::LEDC.timer_config(group, timer, resolution, frequency)
     ESP32::LEDC.channel_config(pin, group, timer, channel)
+  end
+  
+  def ledc_detach(pin)
+    ESP32::LEDC.unset_pin(pin)
+    (0..ledc_pins.length - 1).each do |index|
+      ledc_pins[index] = nil if ledc_pins[index] == pin
+    end
+  end
+  
+  def pwm_setup(pin)
+    vchan = ledc_assign(pin)
+    ledc_config(pin, vchan)
     
     # Component stores virtual channel.
     vchan
   end
 
   def pwm_write(vchan, value)
-    ESP32::LEDC.write(LEDC_CHANNEL_MAP[vchan][0], LEDC_CHANNEL_MAP[vchan][2], value)
+    ESP32::LEDC.set_duty(LEDC_CHANNEL_MAP[vchan][0], LEDC_CHANNEL_MAP[vchan][2], value)
   end
   
   def adc_read(adc_channel)
@@ -77,7 +81,7 @@ class Board
   end
   
   # Treat the LEDC channel groups as a continuous set of 16.
-  # Share the timers the same way Arduino dies.
+  # Share the timers the same way Arduino does.
   LEDC_CHANNEL_MAP = [
     [LEDC_HIGH_SPEED_MODE, LEDC_TIMER_0, LEDC_CHANNEL_0],
     [LEDC_HIGH_SPEED_MODE, LEDC_TIMER_0, LEDC_CHANNEL_1],
