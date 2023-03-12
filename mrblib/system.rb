@@ -7,5 +7,5 @@ def deep_sleep(time)
 end
 
 def micros
-  ESP32::System.micros
+  ESP32::Timer.get_time
 end
