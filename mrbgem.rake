@@ -3,7 +3,7 @@ require_relative "mrblib/version"
 MRuby::Gem::Specification.new('mruby-denko-board-esp32') do |spec|
   spec.license = 'MIT'
   spec.authors = 'vickash'
-  spec.version = Denko::VERSION
+  spec.version = Denko::Board::VERSION
   
   # Forked dependencies from mruby-esp32 project.
   spec.add_dependency('mruby-esp32-system', github: 'denko-rb/mruby-esp32-system')
