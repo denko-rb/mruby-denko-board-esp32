@@ -1,5 +1,3 @@
-module Dino
-  module ESP32
-    VERSION = '0.13.0'
-  end
+module Denko
+  VERSION = '0.13.0'
 end
