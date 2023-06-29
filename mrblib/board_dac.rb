@@ -19,12 +19,12 @@ module Denko
         DAC_MAP = {}
       end
     
-      def map_dac(number)
-        DAC_MAP[number]
+      def map_dac(gpio_num)
+        DAC_MAP[gpio_num]
       end
     
-      def dac_write(dac_channel, value)
-        ESP32::GPIO.analog_write(dac_channel, value)
+      def dac_write(pin, value)
+        ESP32::GPIO.analog_write(map_dac(pin), value)
       end
     end
   end
