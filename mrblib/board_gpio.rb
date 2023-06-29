@@ -14,8 +14,13 @@ module Denko
     end
     GPIO_MAP = gpio_map_temp.dup
   
-    def map_pin(number)
-      GPIO_MAP[number]
+    def convert_pin(number)
+      pin = GPIO_MAP[number]
+      if !pin
+        raise "given pin: #{number} is unavailable"
+      else
+        return pin
+      end
     end
 
     def set_pin_mode(gpio, mode)
@@ -29,7 +34,7 @@ module Denko
       when :input_output;             mode_def = ESP32::GPIO_MODE_INPUT_OUTPUT
       when :input_output_open_drain;  mode_def = ESP32::GPIO_MODE_INPUT_OUTPUT_OD
       when :output_open_drain;        mode_def = ESP32::GPIO_MODE_OUTPUT_OD
-      else raise "Unknown pin mode given: #{mode}"
+      else raise "unknown pin mode given: #{mode}"
       end
       ESP32::GPIO.pin_mode(gpio, mode_def) if mode_def
     end
