@@ -56,12 +56,12 @@ module Denko
       ADC1_MAP = {}
     end
 
-    def map_adc(number)
-      ADC1_MAP[number]
+    def map_adc(gpio_num)
+      ADC1_MAP[gpio_num]
     end
   
-    def adc_read(adc_channel)
-      ESP32::GPIO.analog_read(adc_channel)
+    def analog_read(pin, negative_pin=nil, gain=nil, sample_rate=nil)
+      ESP32::GPIO.analog_read(map_adc(pin))
     end
   end
 end
