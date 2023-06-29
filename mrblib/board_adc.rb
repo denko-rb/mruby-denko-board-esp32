@@ -11,22 +11,22 @@ module Denko
     adc_count  = nil 
   
     # S2 and S3 
-    if (CHIP_MODEL == "esp32s2") || (CHIP_MODEL == "esp32s3")
+    if (CHIP_MODEL == CHIP_ESP32S2) || (CHIP_MODEL == CHIP_ESP32S3)
       adc_offset = 1; adc_count = 10 
     end
   
     # C2 and C3
-    if (CHIP_MODEL == "esp32c2") || (CHIP_MODEL == "esp32c3")
+    if (CHIP_MODEL == CHIP_ESP32C2) || (CHIP_MODEL == CHIP_ESP32C3)
       adc_offset = 0; adc_count = 5 
     end
   
     # C6
-    if (CHIP_MODEL == "esp32c6")
+    if (CHIP_MODEL == CHIP_ESP32C6)
       adc_offset = 0; adc_count = 7
     end
   
     # H2
-    if (CHIP_MODEL == "esp32h2")
+    if (CHIP_MODEL == CHIP_ESP32H2)
       adc_offset = 1; adc_count = 5 
     end
   
@@ -40,7 +40,7 @@ module Denko
       end
       ADC1_MAP = adc1_map_temp.dup
     # Original ESP32 has this weird mapping.
-    elsif (CHIP_MODEL == "esp32")
+    elsif (CHIP_MODEL == CHIP_ESP32)
       ADC1_MAP = {
         36 => ADC_CHANNEL_0,
         37 => ADC_CHANNEL_1,

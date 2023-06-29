@@ -5,12 +5,12 @@ module Denko
     if SOC_DAC_SUPPORTED
       #
       # Hash that maps GPIO to their connected DAC channels, depending on chip model.
-      if (CHIP_MODEL == "esp32")
+      if (CHIP_MODEL == CHIP_ESP32)
         DAC_MAP = {
           25 => DAC_CHAN_0,
           26 => DAC_CHAN_1,
         }
-      elsif (CHIP_MODEL == "esp32s2")
+      elsif (CHIP_MODEL == CHIP_ESP32S2)
         DAC_MAP = {
           17 => DAC_CHAN_0,
           18 => DAC_CHAN_1,
