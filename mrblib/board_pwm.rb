@@ -99,7 +99,13 @@ module Denko
       vchan
     end
 
-    def pwm_write(vchan, value)
+    def pwm_write(pin, value)
+      vchan = @lec_pins.find_index(pin)
+      unless vchan
+        vchan = pwm_setup(pin)
+      end
+      return unless vchan
+      
       ESP32::LEDC.set_duty(LEDC_CHANNEL_MAP[vchan][0], LEDC_CHANNEL_MAP[vchan][2], value)
     end
   end
