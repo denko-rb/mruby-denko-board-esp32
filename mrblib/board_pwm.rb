@@ -22,7 +22,7 @@ module Denko
         [LEDC_LOW_SPEED_MODE, LEDC_TIMER_2, LEDC_CHANNEL_4],
         [LEDC_LOW_SPEED_MODE, LEDC_TIMER_2, LEDC_CHANNEL_5],
     ]
-    
+
     # Original ESP32, S2 and S3 have channels 6,7.
     if [CHIP_ESP32, CHIP_ESP32S2, CHIP_ESP32S3].include?(CHIP_MODEL)
       ledc_temp = ledc_temp + [
@@ -30,7 +30,7 @@ module Denko
         [LEDC_LOW_SPEED_MODE, LEDC_TIMER_3, LEDC_CHANNEL_7],
       ]
     end
-  
+
     # Original ESP32 has 8 more high speed channels that get added to the start of the array.
     if (CHIP_MODEL == CHIP_ESP32)
       ledc_temp =  [
@@ -44,68 +44,73 @@ module Denko
         [LEDC_HIGH_SPEED_MODE, LEDC_TIMER_3, LEDC_CHANNEL_7],
       ] + ledc_temp
     end
-  
+
+    # Final settings.
     LEDC_CHANNEL_MAP = ledc_temp.dup
 
-    # Tracks which pin is assigned to which channel.
-    def ledc_pins
-      @ledc_pins ||= Array.new(LEDC_CHANNEL_MAP.length)
+    def ledc_to_pin
+      @ledc_to_pin ||= Array.new(LEDC_CHANNEL_MAP.length)
+    end
+
+    def pin_to_ledc
+      @pin_to_ledc ||= Array.new(49)
     end
 
     # Assign or reassign a channel to the given pin.
     def ledc_assign(pin)
-      (0..ledc_pins.length - 1).each do |index|
-        if ledc_pins[index] == pin
-          # Pin already assigned to this channel.
-          return index
-        elsif !ledc_pins[index]
+      vchan = 0
+      while vchan < LEDC_CHANNEL_MAP.length do
+        if ledc_to_pin[vchan] == pin
+          # Pin already assigned to this channel. Use it.
+          return vchan
+        elsif !ledc_to_pin[vchan]
           # Channel unassigned. Use it.
-          ledc_pins[index] = pin
-          return index
+          ledc_to_pin[vchan] = pin
+          pin_to_ledc[pin] = vchan
+          return vchan
         end
+        vchan += 1
       end
       nil
     end
-  
-    # Configure the hardware for the given pin and channel.
-    def ledc_config(pin, vchan)
-      vchan = ledc_assign(pin)
+
+    # Configure settings for a given LEDC vchan assigned to given pin.
+    def ledc_config(vchan)
+      pin = ledc_to_pin[vchan]
+      raise "LEDC virtual channel #{vchan} isn't assigned to any pin" unless pin
+      
       group = LEDC_CHANNEL_MAP[vchan][0]
       timer = LEDC_CHANNEL_MAP[vchan][1]
       channel = LEDC_CHANNEL_MAP[vchan][2]
-      # Just Arduino defaults for now
+      
+      # Just Arduino defaults for now.
       resolution = LEDC_TIMER_8_BIT
       frequency = 1000
     
       ESP32::LEDC.timer_config(group, timer, resolution, frequency)
       ESP32::LEDC.channel_config(pin, group, timer, channel)
     end
-  
+
     # Deconfigure hardware for a given pin and free any virtual channel it was using.
     def ledc_detach(pin)
       ESP32::LEDC.unset_pin(pin)
-      (0..ledc_pins.length - 1).each do |index|
-        ledc_pins[index] = nil if ledc_pins[index] == pin
-      end
+      vchan = pin_to_ledc[pin]
+      ledc_to_pin[vchan] = nil
+      pin_to_ledc[pin]   = nil
     end
-  
-    #
-    # Denko Board PWM interface.
-    # 
+
     def pwm_setup(pin)
       vchan = ledc_assign(pin)
-      ledc_config(pin, vchan)
-      # Component stores virtual channel.
+      raise "no PWM (LEDC) channels available" unless vchan
+      ledc_config(vchan)
       vchan
     end
 
+    #
+    # Denko::Board PWM interface.
+    # 
     def pwm_write(pin, value)
-      vchan = @lec_pins.find_index(pin)
-      unless vchan
-        vchan = pwm_setup(pin)
-      end
-      return unless vchan
-      
+      vchan = pin_to_ledc[pin] || pwm_setup(pin)
       ESP32::LEDC.set_duty(LEDC_CHANNEL_MAP[vchan][0], LEDC_CHANNEL_MAP[vchan][2], value)
     end
   end
