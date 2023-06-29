@@ -18,7 +18,7 @@ module Denko
       GPIO_MAP[number]
     end
 
-    def pin_mode(gpio, mode)
+    def set_pin_mode(gpio, mode)
       mode_def = nil
       case mode
       when :input;                    mode_def = ESP32::GPIO_MODE_INPUT
