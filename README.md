@@ -1,10 +1,10 @@
 # mruby-denko-board-esp32
 
-This gem aims to implement `Denko::Board`, similar in interface to the [main denko gem](https://github.com/denko-rb/denko). It will allow `Denko` peripheral classes to be used on mruby, self-contained on the ESP32 microcontroller. This is a work-in-progress.
+This gem aims to implement `Denko::Board`, similar in interface to the [denko CRuby gem](https://github.com/denko-rb/denko). It allows `Denko` peripheral classes to be used on mruby, self-contained on the ESP32 microcontroller. This is a work-in-progress.
 
 ## Usage
 
-The eventual plan is to make pre-compiled binaries available for each board or chip. They would implement USB Mass Storage where avialable, and run `main.rb` on boot.
+The eventual plan is to make pre-compiled binaries available for each board or chip. They would implement USB Mass Storage where avialable, and run `main.rb` from the root directory on boot.
 
 Right now though, it must be run by compiling the entire ESP-IDF project and uploading to the board, with `main.rb` in the `spiffs` folder. See [mruby-denko](https://github.com/denko-rb/mruby-denko) for project templates.
 
@@ -28,9 +28,9 @@ Right now though, it must be run by compiling the entire ESP-IDF project and upl
   - Open Drain Mode
   - Digital Input (no automatic listeners like main gem)
   - Digital Output
-  - PWM Output
+  - PWM Output (all LEDC channels)
   - Analog Input (all ADC1 channels, no ADC2 yet)
-  - Analog Output (only original ESP32 and S2 have this)
+  - Analog Output (only original ESP32 and S2 have DACs)
 
 ### To Be Implemented
   - WiFi
@@ -53,4 +53,4 @@ Right now though, it must be run by compiling the entire ESP-IDF project and upl
 - [mruby-esp32-gpio](https://github.com/denko-rb/mruby-esp32-gpio)
 - [mruby-esp32-ledc](https://github.com/denko-rb/mruby-esp32-ledc)
 
-The first two are forked form the [mruby-esp32 project](https://github.com/mruby-esp32).
+These are forked from [mruby-esp32](https://github.com/mruby-esp32).
