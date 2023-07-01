@@ -5,6 +5,9 @@ module Denko
     
     HIGH = 1
     LOW = 0
+    PWM_HIGH = 255
+    ADC_HIGH = 4095
+    DAC_HIGH = 255
     
     def low
       LOW
@@ -15,15 +18,15 @@ module Denko
     end
     
     def pwm_high
-      255
+      PWM_HIGH
     end
     
     def adc_high
-      4095
+      ADC_HIGH
     end
     
     def dac_high
-      255
+      DAC_HIGH
     end    
   end
 end
