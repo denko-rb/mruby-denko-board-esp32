@@ -24,15 +24,15 @@ module Denko
     ]
 
     # Original ESP32, S2 and S3 have channels 6,7.
-    if [CHIP_ESP32, CHIP_ESP32S2, CHIP_ESP32S3].include?(CHIP_MODEL)
+    if LEDC_CHANNEL_MAX == 7
       ledc_temp = ledc_temp + [
         [LEDC_LOW_SPEED_MODE, LEDC_TIMER_3, LEDC_CHANNEL_6],
         [LEDC_LOW_SPEED_MODE, LEDC_TIMER_3, LEDC_CHANNEL_7],
       ]
     end
 
-    # Original ESP32 has 8 more high speed channels that get added to the start of the array.
-    if (CHIP_MODEL == CHIP_ESP32)
+    # Original ESP32 has 8 high speed channels that are used preferrentially.
+    if ESP32::Constants.const_defined?("LEDC_HIGH_SPEED_MODE")
       ledc_temp =  [
         [LEDC_HIGH_SPEED_MODE, LEDC_TIMER_0, LEDC_CHANNEL_0],
         [LEDC_HIGH_SPEED_MODE, LEDC_TIMER_0, LEDC_CHANNEL_1],
