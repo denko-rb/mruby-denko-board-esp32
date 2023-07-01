@@ -29,6 +29,7 @@ Right now though, it must be run by compiling the entire ESP-IDF project and upl
   - Digital Input (no automatic listeners like main gem)
   - Digital Output
   - PWM Output (all LEDC channels)
+  - Tone Out
   - Analog Input (all ADC1 channels, no ADC2 yet)
   - Analog Output (only original ESP32 and S2 have DACs)
 
@@ -40,7 +41,6 @@ Right now though, it must be run by compiling the entire ESP-IDF project and upl
   - DHT Class Temperature + Humidity Sensors
   - I2C
   - SPI
-  - Tone Out
   - Infrared Out
   - Hardware UART
   - BitBang I2C

@@ -20,6 +20,7 @@ MRuby::Gem::Specification.new('mruby-denko-board-esp32') do |spec|
     "#{dir}/mrblib/board_setup.rb",
     "#{dir}/mrblib/board_gpio.rb",
     "#{dir}/mrblib/board_pwm.rb",
+    "#{dir}/mrblib/board_tone.rb",
     "#{dir}/mrblib/board_adc.rb",
     "#{dir}/mrblib/board_dac.rb",
     "#{dir}/mrblib/board.rb",
