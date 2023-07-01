@@ -24,7 +24,7 @@ module Denko
     ]
 
     # Original ESP32, S2 and S3 have channels 6,7.
-    if LEDC_CHANNEL_MAX == 7
+    if (LEDC_CHANNEL_MAX - 1) == 7
       ledc_temp = ledc_temp + [
         [LEDC_LOW_SPEED_MODE, LEDC_TIMER_3, LEDC_CHANNEL_6],
         [LEDC_LOW_SPEED_MODE, LEDC_TIMER_3, LEDC_CHANNEL_7],
