@@ -5,12 +5,11 @@ MRuby::Gem::Specification.new('mruby-denko-board-esp32') do |spec|
   spec.authors = 'vickash'
   spec.version = Denko::Board::VERSION
   
-  # Put C extensions in the compiler's path.
-  spec.cc.include_paths << "#{build.root}/src"
+  # src/mrb_denko_board_esp32.c is automatically incldued in compiler path.
   
   # Forked dependencies from mruby-esp32 project.
-  spec.add_dependency('mruby-esp32-system', github: 'denko-rb/mruby-esp32-system')
-  spec.add_dependency('mruby-esp32-gpio',   github: 'denko-rb/mruby-esp32-gpio')
+  # spec.add_dependency('mruby-esp32-system', github: 'denko-rb/mruby-esp32-system')
+  # spec.add_dependency('mruby-esp32-gpio',   github: 'denko-rb/mruby-esp32-gpio')
   spec.add_dependency('mruby-esp32-ledc',   github: 'denko-rb/mruby-esp32-ledc')
   
   # Direct dependencies from mruby-esp32 project.

@@ -35,7 +35,7 @@ module Denko
       adc1_map_temp = {}
       i = 0
       while(i < adc_count) do
-        adc1_map_temp[adc_offset+i] = ESP32::Constants.const_get("ADC_CHANNEL_#{i}")
+        adc1_map_temp[adc_offset+i] = self.const_get("ADC_CHANNEL_#{i}")
         i += 1
       end
       ADC1_MAP = adc1_map_temp.dup
@@ -61,7 +61,8 @@ module Denko
     end
   
     def analog_read(pin, negative_pin=nil, gain=nil, sample_rate=nil)
-      ESP32::GPIO.analog_read(map_adc(pin))
+      # Defined in C.
+      adc_read_channel(map_adc(pin))
     end
   end
 end

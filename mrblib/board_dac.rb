@@ -24,7 +24,8 @@ module Denko
       end
     
       def dac_write(pin, value)
-        ESP32::GPIO.analog_write(map_dac(pin), value)
+        # Defined in C.
+        dac_write_channel(map_dac(pin), value)
       end
     end
   end
