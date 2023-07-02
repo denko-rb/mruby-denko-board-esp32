@@ -1,6 +1,5 @@
 module Denko
   class Board
-    include ESP32::Constants
     CHIP_MODEL = self.chip_model
     
     # LOW and HIGH defined in C.
@@ -26,6 +25,10 @@ module Denko
     
     def dac_high
       DAC_HIGH
-    end    
+    end
+    
+    def initialize
+      ledc_initialize
+    end
   end
 end

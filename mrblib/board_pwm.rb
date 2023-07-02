@@ -6,7 +6,7 @@ module Denko
     # ESP32 chips can have different numbers of LEDC modes (groups), and channels and
     # timers within those groups.
     # 
-    # Build an array (LEDC_CHANNEL_MAP) to map these resources to "virtual channels", following these rules:
+    # Build an array (LEDC_MAP) to map these resources to "virtual channels", following these rules:
     #   1) High speed groups are lower indexed in the array than low speed groups.
     #   2) Each timer is used by 2 sequential channels. Generally 4 timers and 8 channels per group.
     #   3) Timers and channels within a group are used up in ascending numerical order.
@@ -32,7 +32,7 @@ module Denko
     end
 
     # Original ESP32 has 8 high speed channels that are used preferrentially.
-    if ESP32::Constants.const_defined?("LEDC_HIGH_SPEED_MODE")
+    if self.const_defined?("LEDC_HIGH_SPEED_MODE")
       ledc_temp =  [
         [LEDC_HIGH_SPEED_MODE, LEDC_TIMER_0, LEDC_CHANNEL_0],
         [LEDC_HIGH_SPEED_MODE, LEDC_TIMER_0, LEDC_CHANNEL_1],
@@ -46,27 +46,25 @@ module Denko
     end
 
     # Final settings.
-    LEDC_CHANNEL_MAP = ledc_temp.dup
+    LEDC_MAP = ledc_temp.dup
+    LEDC_COUNT = LEDC_MAP.length
 
-    def ledc_to_pin
-      @ledc_to_pin ||= Array.new(LEDC_CHANNEL_MAP.length)
-    end
-
-    def pin_to_ledc
-      @pin_to_ledc ||= Array.new(49)
+    def ledc_initialize
+      @ledc_to_pin = Array.new(LEDC_MAP.length)
+      @pin_to_ledc = Array.new(49)
     end
 
     # Assign or reassign a channel to the given pin.
     def ledc_assign(pin)
       vchan = 0
-      while vchan < LEDC_CHANNEL_MAP.length do
-        if ledc_to_pin[vchan] == pin
+      while vchan < LEDC_COUNT do
+        if @ledc_to_pin[vchan] == pin
           # Pin already assigned to this channel. Use it.
           return vchan
-        elsif !ledc_to_pin[vchan]
+        elsif !@ledc_to_pin[vchan]
           # Channel unassigned. Use it.
-          ledc_to_pin[vchan] = pin
-          pin_to_ledc[pin] = vchan
+          @ledc_to_pin[vchan] = pin
+          @pin_to_ledc[pin] = vchan
           return vchan
         end
         vchan += 1
@@ -76,42 +74,42 @@ module Denko
 
     # Configure settings for a given LEDC vchan assigned to given pin.
     def ledc_config(vchan)
-      pin = ledc_to_pin[vchan]
+      pin = @ledc_to_pin[vchan]
       raise "LEDC virtual channel #{vchan} isn't assigned to any pin" unless pin
       
-      group = LEDC_CHANNEL_MAP[vchan][0]
-      timer = LEDC_CHANNEL_MAP[vchan][1]
-      channel = LEDC_CHANNEL_MAP[vchan][2]
+      group   = LEDC_MAP[vchan][0]
+      timer   = LEDC_MAP[vchan][1]
+      channel = LEDC_MAP[vchan][2]
       
       # Just Arduino defaults for now.
       resolution = LEDC_TIMER_8_BIT
       frequency = 1000
     
-      ESP32::LEDC.timer_config(group, timer, resolution, frequency)
-      ESP32::LEDC.channel_config(pin, group, timer, channel)
+      ledc_timer_config(group, timer, resolution, frequency)
+      ledc_channel_config(pin, group, timer, channel)
     end
-
-    # Deconfigure hardware for a given pin and free any virtual channel it was using.
-    def ledc_detach(pin)
-      ESP32::LEDC.unset_pin(pin)
-      vchan = pin_to_ledc[pin]
-      ledc_to_pin[vchan] = nil
-      pin_to_ledc[pin]   = nil
-    end
-
-    def pwm_setup(pin)
+    
+    def ledc_setup(pin)
       vchan = ledc_assign(pin)
       raise "no PWM (LEDC) channels available" unless vchan
       ledc_config(vchan)
       vchan
+    end
+    
+    # Deconfigure hardware for a given pin and free any virtual channel it was using.
+    def ledc_detach(pin)
+      ledc_unset_pin(pin)
+      vchan = @pin_to_ledc[pin]
+      @ledc_to_pin[vchan] = nil
+      @pin_to_ledc[pin]   = nil
     end
 
     #
     # Denko::Board PWM interface.
     # 
     def pwm_write(pin, value)
-      vchan = pin_to_ledc[pin] || pwm_setup(pin)
-      ESP32::LEDC.set_duty(LEDC_CHANNEL_MAP[vchan][0], LEDC_CHANNEL_MAP[vchan][2], value)
+      vchan = @pin_to_ledc[pin] || ledc_setup(pin)
+      ledc_set_duty(LEDC_MAP[vchan][0], LEDC_MAP[vchan][2], value)
     end
   end
 end

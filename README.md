@@ -33,6 +33,10 @@ Right now though, it must be run by compiling the entire ESP-IDF project and upl
   - Analog Input (all ADC1 channels, no ADC2 yet)
   - Analog Output (only original ESP32 and S2 have DACs)
 
+### Known Issues
+  - Buzzer will change the PWM frequency of any device it happens to share a LEDC timer with.
+  - Likewise, servos probably shouldn't share timers with other devices.
+
 ### To Be Implemented
   - WiFi
   - USB Mass Storage

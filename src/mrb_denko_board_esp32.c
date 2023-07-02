@@ -1,7 +1,10 @@
-#include <mruby.h>
+// Custom methods for Denko
+#include "mrb_esp32_custom.c"
+
+// Files from mruby-esp32 gems.
 #include "mrb_esp32_system.c"
 #include "mrb_esp32_gpio.c"
-#include "mrb_esp32_custom.c"
+#include "mrb_esp32_ledc.c"
 
 void
 mrb_mruby_denko_board_esp32_gem_init(mrb_state* mrb) {
@@ -222,6 +225,82 @@ mrb_mruby_denko_board_esp32_gem_init(mrb_state* mrb) {
   // GPIO logic levels.
   mrb_define_const(mrb, mrb_Denko_Board, "LOW", mrb_fixnum_value(0));
   mrb_define_const(mrb, mrb_Denko_Board, "HIGH", mrb_fixnum_value(1));
+  
+  ////////////////////////////
+  // LEDC Constant Definitions
+  ////////////////////////////
+  //
+  // LEDC Speed Modes (Groups)
+  // All chips define LEDC_LOW_SPEED_MODE, with either 6 or 8 channels.
+  define_const(LEDC_LOW_SPEED_MODE); 
+  //
+  // Only original ESP32 defines LEDC_HIGH_SPEED_MODE, second group with 8 more channels.
+  #ifdef SOC_LEDC_SUPPORT_HS_MODE
+    define_const(LEDC_HIGH_SPEED_MODE);
+  #endif
+  
+  //
+  // LEDC Channels
+  // All chips define LEDC_CHANNEL_MAX and LEDC_CHANNEL_0..LEDC_CHANNEL_5.
+  define_const(LEDC_CHANNEL_MAX);
+  define_const(LEDC_CHANNEL_0);
+  define_const(LEDC_CHANNEL_1);
+  define_const(LEDC_CHANNEL_2);
+  define_const(LEDC_CHANNEL_3);
+  define_const(LEDC_CHANNEL_4);
+  define_const(LEDC_CHANNEL_5);
+  // Only original ESP32, S2 and S3 have 6,7.
+  #if SOC_LEDC_CHANNEL_NUM==8
+    define_const(LEDC_CHANNEL_6);
+    define_const(LEDC_CHANNEL_7);
+  #endif
+  
+  // All chips have 4 LEDC timers.
+  define_const(LEDC_TIMER_MAX);
+  define_const(LEDC_TIMER_0);
+  define_const(LEDC_TIMER_1);
+  define_const(LEDC_TIMER_2);
+  define_const(LEDC_TIMER_3);
+
+  // LEDC timer resolutions.
+  define_const(LEDC_TIMER_BIT_MAX);
+  define_const(LEDC_TIMER_1_BIT);
+  define_const(LEDC_TIMER_2_BIT);
+  define_const(LEDC_TIMER_3_BIT);
+  define_const(LEDC_TIMER_4_BIT);
+  define_const(LEDC_TIMER_5_BIT);
+  define_const(LEDC_TIMER_6_BIT);
+  define_const(LEDC_TIMER_7_BIT);
+  define_const(LEDC_TIMER_8_BIT);
+  define_const(LEDC_TIMER_9_BIT);
+  define_const(LEDC_TIMER_10_BIT);
+  define_const(LEDC_TIMER_11_BIT);
+  define_const(LEDC_TIMER_12_BIT);
+  define_const(LEDC_TIMER_13_BIT);
+  define_const(LEDC_TIMER_14_BIT);
+  // 15 to 20-bit timers available on original ESP32, C6 and H2.
+  #if SOC_LEDC_TIMER_BIT_WIDTH==20
+    define_const(LEDC_TIMER_15_BIT);
+    define_const(LEDC_TIMER_16_BIT);
+    define_const(LEDC_TIMER_17_BIT);
+    define_const(LEDC_TIMER_18_BIT);
+    define_const(LEDC_TIMER_19_BIT);
+    define_const(LEDC_TIMER_20_BIT);
+  #endif
+    
+  ////////////////////////////
+  // LEDC Method Definitions
+  ////////////////////////////
+  
+  // From mrb_esp32_ledc.c
+  // Denko::Board instance methods
+  mrb_define_method(mrb, mrb_Denko_Board, "ledc_timer_config",    mrb_esp32_ledc_timer_config,    MRB_ARGS_REQ(4));
+  mrb_define_method(mrb, mrb_Denko_Board, "ledc_channel_config",  mrb_esp32_ledc_channel_config,  MRB_ARGS_REQ(4));
+  mrb_define_method(mrb, mrb_Denko_Board, "ledc_set_duty",        mrb_esp32_ledc_set_duty,        MRB_ARGS_REQ(3));
+  mrb_define_method(mrb, mrb_Denko_Board, "ledc_set_freq",        mrb_esp32_ledc_set_freq,        MRB_ARGS_REQ(3));
+  mrb_define_method(mrb, mrb_Denko_Board, "ledc_stop",            mrb_esp32_ledc_stop,            MRB_ARGS_REQ(3));
+  mrb_define_method(mrb, mrb_Denko_Board, "ledc_set_pin",         mrb_esp32_ledc_set_pin,         MRB_ARGS_REQ(3));
+  mrb_define_method(mrb, mrb_Denko_Board, "ledc_unset_pin",       mrb_esp32_ledc_unset_pin,       MRB_ARGS_REQ(1));
 }
 
 void

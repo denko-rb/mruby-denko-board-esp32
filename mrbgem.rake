@@ -5,15 +5,17 @@ MRuby::Gem::Specification.new('mruby-denko-board-esp32') do |spec|
   spec.authors = 'vickash'
   spec.version = Denko::Board::VERSION
   
-  # src/mrb_denko_board_esp32.c is automatically incldued in compiler path.
-  
-  # Forked dependencies from mruby-esp32 project.
-  # spec.add_dependency('mruby-esp32-system', github: 'denko-rb/mruby-esp32-system')
-  # spec.add_dependency('mruby-esp32-gpio',   github: 'denko-rb/mruby-esp32-gpio')
-  spec.add_dependency('mruby-esp32-ledc',   github: 'denko-rb/mruby-esp32-ledc')
-  
   # Direct dependencies from mruby-esp32 project.
   spec.add_dependency('mruby-io',           github: 'mruby-esp32/mruby-io', :branch => 'esp32')
+  
+  # These gems have their partial source included, with a custom initializer
+  # for better performance:
+  #
+  # spec.add_dependency('mruby-esp32-system', github: 'denko-rb/mruby-esp32-system')
+  # spec.add_dependency('mruby-esp32-gpio',   github: 'denko-rb/mruby-esp32-gpio')
+  # spec.add_dependency('mruby-esp32-ledc',   github: 'denko-rb/mruby-esp32-ledc')
+  
+  # src/mrb_denko_board_esp32.c is automatically incldued in compiler path.
   
   # Include files in the right order.
   spec.rbfiles = [

@@ -24,6 +24,7 @@ module Denko
     end
 
     def set_pin_mode(pin, mode)
+      # LEDC detach here?
       case mode
       when :input;                    mode_const = GPIO_MODE_INPUT
       when :output;                   mode_const = GPIO_MODE_OUTPUT
