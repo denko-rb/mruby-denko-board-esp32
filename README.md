@@ -1,19 +1,21 @@
 # mruby-denko-board-esp32
 
-This gem aims to implement `Denko::Board`, similar in interface to the [denko CRuby gem](https://github.com/denko-rb/denko). It allows `Denko` peripheral classes to be used on mruby, self-contained on the ESP32 microcontroller. This is a work-in-progress.
+This gem aims to implement `Denko::Board`, with a similar interface to the [denko CRuby gem](https://github.com/denko-rb/denko). It allows `Denko` peripheral classes to be used on mruby, self-contained on the ESP32 microcontroller. This is a work-in-progress.
 
 ## Usage
 
 The eventual plan is to make pre-compiled binaries available for each board or chip. They would implement USB Mass Storage where avialable, and run `main.rb` from the root directory on boot.
 
-Right now though, it must be run by compiling the entire ESP-IDF project and uploading to the board, with `main.rb` in the `spiffs` folder. See [mruby-denko](https://github.com/denko-rb/mruby-denko) for project templates.
+Right now though, it must be run by compiling the entire ESP-IDF project and flashing the board, which will run `main.rb` from the `main/spiffs` folder.
+
+[mruby-denko](https://github.com/denko-rb/mruby-denko) contains ready-to-use ESP-IDF project folders for the different chips.
 
 ## Supported Hardware
 
 |    Chip        | Build Status    | Board Tested         | Notes |
 | :--------      | :------:        | :---------------     |------ |
 | ESP32          | :green_heart:   | DOIT ESP32 DevKit V1 |
-| ESP32-S2       | :heart:         | LOLIN S2 Pico        | Native USB
+| ESP32-S2       | :green_heart:   | LOLIN S2 Pico        | Native USB
 | ESP32-S3       | :green_heart:   | LOLIN S3 V1.0.0      | Native USB
 | ESP32-C3       | :heart:         | LOLIN C3 Mini V2.1.0 | Native USB
 | ESP32-C2       | :question:      | -                    | 
@@ -36,6 +38,7 @@ Right now though, it must be run by compiling the entire ESP-IDF project and upl
 ### Known Issues
   - Buzzer will change the PWM frequency of any device it happens to share a LEDC timer with.
   - Likewise, servos probably shouldn't share timers with other devices.
+  - LEDs automatically tie up a LEDC channel even if being used as digital.
 
 ### To Be Implemented
   - WiFi
