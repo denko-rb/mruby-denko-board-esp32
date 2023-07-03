@@ -6,7 +6,9 @@ MRuby::Gem::Specification.new('mruby-denko-board-esp32') do |spec|
   spec.version = Denko::Board::VERSION
   
   # Direct dependencies from mruby-esp32 project.
-  spec.add_dependency('mruby-io',           github: 'mruby-esp32/mruby-io', :branch => 'esp32')
+  # Replaced this by requiring standard 'mruby-io' in mruby-denko-core,
+  # and using a forked version of mruby, specifically for ESP32.
+  # spec.add_dependency('mruby-io',           github: 'mruby-esp32/mruby-io', :branch => 'esp32')
   
   # These gems have their partial source included, with a custom initializer
   # for better performance:
