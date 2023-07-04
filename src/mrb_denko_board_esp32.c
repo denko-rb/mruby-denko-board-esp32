@@ -1,10 +1,10 @@
+// Files from mruby-esp32 gems.
+#include "../ext/mruby-esp32-system/src/mrb_esp32_system.c"
+#include "../ext/mruby-esp32-gpio/src/gpio.c"
+#include "../ext/mruby-esp32-ledc/src/mrb_esp32_ledc.c"
+
 // Custom methods for Denko
 #include "mrb_esp32_custom.c"
-
-// Files from mruby-esp32 gems.
-#include "mrb_esp32_system.c"
-#include "mrb_esp32_gpio.c"
-#include "mrb_esp32_ledc.c"
 
 void
 mrb_mruby_denko_board_esp32_gem_init(mrb_state* mrb) {

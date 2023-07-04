@@ -1,0 +1,9 @@
+[submodule "ext/mruby-esp32-system"]
+	path = ext/mruby-esp32-system
+	url = https://github.com/denko-rb/mruby-esp32-system.git
+[submodule "ext/mruby-esp32-gpio"]
+	path = ext/mruby-esp32-gpio
+	url = https://github.com/denko-rb/mruby-esp32-gpio.git
+[submodule "ext/mruby-esp32-ledc"]
+	path = ext/mruby-esp32-ledc
+	url = https://github.com/denko-rb/mruby-esp32-ledc.git

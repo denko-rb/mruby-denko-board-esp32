@@ -5,19 +5,21 @@ MRuby::Gem::Specification.new('mruby-denko-board-esp32') do |spec|
   spec.authors = 'vickash'
   spec.version = Denko::Board::VERSION
   
-  # Direct dependencies from mruby-esp32 project.
-  # Replaced this by requiring standard 'mruby-io' in mruby-denko-core,
-  # and using a forked version of mruby, specifically for ESP32.
-  # spec.add_dependency('mruby-io',           github: 'mruby-esp32/mruby-io', :branch => 'esp32')
-  
-  # These gems have their partial source included, with a custom initializer
-  # for better performance:
-  #
+  # This was a modified io gem by mruby-esp32.
+  # Replaced by core gem from mruby fork at: https://github.com/denko-rb/mruby
+  # spec.add_dependency('mruby-io', github: 'mruby-esp32/mruby-io', :branch => 'esp32')
+
+  # Use these as submodules inside ./ext, since only using parts of their C files.
   # spec.add_dependency('mruby-esp32-system', github: 'denko-rb/mruby-esp32-system')
   # spec.add_dependency('mruby-esp32-gpio',   github: 'denko-rb/mruby-esp32-gpio')
   # spec.add_dependency('mruby-esp32-ledc',   github: 'denko-rb/mruby-esp32-ledc')
   
+  # Custom method mapping, separate from mruby-esp32.
   # src/mrb_denko_board_esp32.c is automatically incldued in compiler path.
+  
+  # Need to make some things conditional for ESP32 variants in future.
+  if spec.cc.defines.include?("ESP_PLATFORM")
+  end
   
   # Include files in the right order.
   spec.rbfiles = [

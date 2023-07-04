@@ -56,12 +56,12 @@ Right now though, it must be run by compiling the entire ESP-IDF project and fla
   - WS2812
 
 ## Dependencies
-These gems (forked from [mruby-esp32](https://github.com/mruby-esp32)) have partial source included in this repo for better performance:
+mruby fork (branch 'esp32-stable') with some modifications for ESP32:
+
+- [mruby](https://github.com/denko-rb/mruby)
+
+These gems (forked from [mruby-esp32](https://github.com/mruby-esp32)) are submodules in this repo, but mapped to different mruby methods:
 
 - [mruby-esp32-system](https://github.com/denko-rb/mruby-esp32-system)
 - [mruby-esp32-gpio](https://github.com/denko-rb/mruby-esp32-gpio)
 - [mruby-esp32-ledc](https://github.com/denko-rb/mruby-esp32-ledc)
-
-These are mrbgem dependencies in [mrbgem.rake](mrbgem.rake):
-
-- [mruby-io](https://github.com/mruby-esp32/mruby-io)
