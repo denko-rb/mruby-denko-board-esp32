@@ -10,18 +10,6 @@ Right now though, it must be run by compiling the entire ESP-IDF project and fla
 
 [mruby-denko](https://github.com/denko-rb/mruby-denko) contains ready-to-use ESP-IDF project folders for the different chips.
 
-## Supported Hardware
-
-|    Chip        | Build Status    | Board Tested         | Notes |
-| :--------      | :------:        | :---------------     |------ |
-| ESP32          | :green_heart:   | DOIT ESP32 DevKit V1 |
-| ESP32-S2       | :green_heart:   | LOLIN S2 Pico        | Native USB
-| ESP32-S3       | :green_heart:   | LOLIN S3 V1.0.0      | Native USB
-| ESP32-C3       | :heart:         | LOLIN C3 Mini V2.1.0 | Native USB
-| ESP32-C2       | :question:      | -                    | 
-| ESP32-C6       | :question:      | -                    | 
-| ESP32-H2       | :question:      | -                    | 
-
 ## Features
 
 ### Already Implemented
