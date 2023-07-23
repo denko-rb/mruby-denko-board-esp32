@@ -59,6 +59,7 @@ mrb_mruby_denko_board_esp32_gem_init(mrb_state* mrb) {
   // Instance methods on Denko::Board
   mrb_define_method(mrb, mrb_Denko_Board, "deep_sleep",  mrb_esp32_custom_deep_sleep,       MRB_ARGS_REQ(1));
   mrb_define_method(mrb, mrb_Denko_Board, "micro_sleep", mrb_esp32_custom_micro_sleep,      MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, mrb_Denko_Board, "micro_delay", mrb_esp32_custom_micro_sleep,      MRB_ARGS_REQ(1));
 
   ////////////////////////////
   // GPIO Constant Definitions
